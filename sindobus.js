@@ -10,8 +10,10 @@
 
     ext.my_first_block = function() {
                   console.log('test0');
+        var location = 'Boston ,MA';
         $.ajax({
-              url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
+              //url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
+              url: 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&units=imperial',
               dataType: 'jsonp',
               success: function( data ) 
               {
