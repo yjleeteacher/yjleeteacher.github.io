@@ -11,7 +11,7 @@
     ext.my_first_block = function() {
         $.ajax({
               url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
-              dataType: 'json',
+              dataType: 'jsonp',
               success: function( data ) {
                   // Got the data - parse it and return the temperature
                   console.log('receive data',data);
