@@ -8,15 +8,17 @@
         return {status: 2, msg: 'Ready'};
     };
 
+              //url: 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&units=imperial',
     ext.get_temp = function(location, callback) {
         // Make an AJAX call to the Open Weather Maps API
         $.ajax({
-              url: 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&units=imperial',
+              url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
               dataType: 'jsonp',
               success: function( weather_data ) {
                   // Got the data - parse it and return the temperature
-                  temperature = weather_data['main']['temp'];
-                  callback(temperature);
+                  console.log('weather_data',weather_data);
+                  //temperature = weather_data['main']['temp'];
+                  callback(20);
               }
         });
     };
