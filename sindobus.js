@@ -9,16 +9,19 @@
     };
 
     ext.my_first_block = function() {
+                  console.log('test0');
         $.ajax({
               url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
               dataType: 'jsonp',
-              success: function( data ) {
+              success: function( data ) 
+              {
+                  console.log('test1');
                   // Got the data - parse it and return the temperature
                   console.log('receive data',data);
               }
         });
 
-        console.log('hello');
+        console.log('test3');
 
 
 
