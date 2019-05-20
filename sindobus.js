@@ -1,3 +1,7 @@
+window.myCallback = function(data) {
+    //alert(data);
+    console.log('data',data);
+};
 (function(ext) {
     // Cleanup function when the extension is unloaded
     ext._shutdown = function() {};
@@ -8,12 +12,28 @@
         return {status: 2, msg: 'Ready'};
     };
 
+    /*
+    ext.myJsonMethod = function(data) 
+    {
+            console.log('data',data);
+    };
+    */
+
+        var myCallback = function(data)
+        {
+            console.log('data2',data);
+        };
+
+
+
     ext.my_first_block = function() {
                   console.log('test0');
         var location = 'Boston ,MA';
+        /*
         $.ajax({
-              //url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
-              url: 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&units=imperial',
+              url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
+              crossDomain: true,
+              //url: 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&units=imperial',
               dataType: 'jsonp',
               success: function( data ) 
               {
@@ -22,6 +42,65 @@
                   console.log('receive data',data);
               }
         });
+        */
+
+
+        /*
+        $.getJSON("https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod?callback=?",
+          function(data) {
+            console.log('성공 - ', data);
+          }
+        );
+        */
+          var result = $.ajax({
+            url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
+            dataType: 'json',
+//            dataType: "text",
+//            jsonpCallback: "myCallback",
+            success: function(data) {
+              console.log('성공 - ',data);
+            },
+            complete: function(resp){
+                console.log(resp.getAllResponseHeaders());
+            },
+            myCallback: function(data)
+            {
+              console.log('성공3 - ',data);
+
+            } ,
+complete: function (XMLHttpRequest, textStatus) {
+    var headers = XMLHttpRequest.getAllResponseHeaders();
+    console.log('headers',headers);
+    console.log('headersall',XMLHttpRequest);
+},
+        
+    /*
+            error: function (request, textStatus, errorThrown) {
+                console.log(request.getResponseHeader());
+            },
+            */
+            done: function(data2) {
+              console.log('data2', data2);
+            }
+ 
+          });
+
+
+        /*
+        $.ajax({
+            type : "GET",
+            url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
+            dataType :"jsonp",
+            jsonp: true,
+            jsonpCallback: "callback",
+            success : function(data){
+                alert(data);},
+                
+            error : function(httpReq,status,exception){
+                alert(status+" "+exception);
+            }
+        });
+        */
 
         console.log('test3');
 
