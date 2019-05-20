@@ -67,11 +67,14 @@ window.myCallback = function(data) {
               console.log('성공3 - ',data);
 
             } ,
+
+            /*
 complete: function (XMLHttpRequest, textStatus) {
     var headers = XMLHttpRequest.getAllResponseHeaders();
     console.log('headers',headers);
     console.log('headersall',XMLHttpRequest);
 },
+*/
         
     /*
             error: function (request, textStatus, errorThrown) {
