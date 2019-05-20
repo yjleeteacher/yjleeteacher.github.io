@@ -61,7 +61,7 @@ window.myCallback = function(data) {
               console.log('성공 - ',data);
             },
             complete: function(resp){
-                console.log(resp.getAllResponseHeaders());
+                console.log('complete result',resp.responseText);
             },
             myCallback: function(data)
             {
