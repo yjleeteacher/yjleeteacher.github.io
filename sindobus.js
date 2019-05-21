@@ -54,13 +54,13 @@ window.myCallback = function(data) {
         */
           var result = $.ajax({
             url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
-            dataType: 'jsonp',
-            jsonpCallback: "myCallback",
+            dataType: 'json',
+            //jsonpCallback: "myCallback2",
             success: function(data) {
               console.log('성공 - ',data);
             },
             complete: function(resp){
-                console.log('complete result',resp.responseText);
+                console.log('complete result',resp);
             },
             myCallback: function(data)
             {
