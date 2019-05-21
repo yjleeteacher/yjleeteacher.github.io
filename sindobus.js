@@ -96,18 +96,7 @@
         }
     };
 
-
-
-
-
-
-
-
-
-
-
-
-
+    /* bus 정보 읽어오기 */
     function getBusInfoByNo(busNo) 
     {
         for(var i=0; i< busData.length; i++)
