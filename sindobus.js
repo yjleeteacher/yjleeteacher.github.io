@@ -1,161 +1,78 @@
-window.myCallback = function(data) {
-    //alert(data);
-    console.log('data',data);
-};
-(function(ext) {
-    // Cleanup function when the extension is unloaded
-    ext._shutdown = function() {};
+(function(ext) 
+{
+    var busData = null;
 
-    // Status reporting code
-    // Use this to report missing hardware, plugin or unsupported browser
-    ext._getStatus = function() {
-        return {status: 2, msg: 'Ready'};
-    };
-
-    /*
-    ext.myJsonMethod = function(data) 
+    function updateBusInfo() 
     {
-            console.log('data',data);
-    };
-    */
-
-        var myCallback = function(data)
-        {
-            console.log('data2',data);
-        };
-
-
-
-    ext.my_first_block = function() {
-                  console.log('test0');
-        var location = 'Boston ,MA';
-        /*
         $.ajax({
-              url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
-              crossDomain: true,
-              //url: 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&units=imperial',
-              dataType: 'jsonp',
-              success: function( data ) 
-              {
-                  console.log('test1');
-                  // Got the data - parse it and return the temperature
-                  console.log('receive data',data);
-              }
-        });
-        */
-
-
-        /*
-        $.getJSON("https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod?callback=?",
-          function(data) {
-            console.log('성공 - ', data);
+          type: "GET",
+          dataType: "json",
+          url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
+          success: function(data) {
+            busData = data.body.itemList;
+          },
+          error: function(jqxhr, textStatus, error) {
+            console.log("Error downloading ISS data");
           }
-        );
-        */
-          var result = $.ajax({
-            url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
-            dataType: 'json',
-            //jsonpCallback: "myCallback2",
-            success: function(data) {
-              console.log('성공 - ',data);
-            },
-            complete: function(resp){
-                console.log('complete result',resp);
-            },
-            myCallback: function(data)
-            {
-              console.log('성공3 - ',data);
-
-            } ,
-
-            /*
-complete: function (XMLHttpRequest, textStatus) {
-    var headers = XMLHttpRequest.getAllResponseHeaders();
-    console.log('headers',headers);
-    console.log('headersall',XMLHttpRequest);
-},
-*/
-        
-    /*
-            error: function (request, textStatus, errorThrown) {
-                console.log(request.getResponseHeader());
-            },
-            */
-            done: function(data2) {
-              console.log('data2', data2);
-            }
- 
-          });
-
-
-        /*
-        $.ajax({
-            type : "GET",
-            url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
-            dataType :"jsonp",
-            jsonp: true,
-            jsonpCallback: "callback",
-            success : function(data){
-                alert(data);},
-                
-            error : function(httpReq,status,exception){
-                alert(status+" "+exception);
-            }
         });
-        */
+    }
 
-        console.log('test3');
+    ext.getBusArrivalInfo = function(busNo,callback) 
+    {
+        if (!busData) return;
+        if (!busNo) return;
 
+        console.log('busNo',busNo);
 
+        var busInfo = getBusInfoByNo(busNo); 
 
-        // Code that gets executed when the block is run
+        if(busInfo != '')
+        {
+            console.log('busInfo1',busInfo.arrmsg1);
+            console.log('busInfo2',busInfo.arrmsg2);
+            callback(busInfo);
+        }
+        else 
+        {
+            console.log('busInfo is empty');
+        }
     };
 
-    // Block and block menu descriptions
-    var descriptor = {
+    function getBusInfoByNo(busNo) 
+    {
+        for(var i=0; i< busData.length; i++)
+        {
+            if(busData[i].rtNm == busNo)
+            {
+                return busData[i]; 
+            }
+        }
+        return '';
+    }
+
+    ext._getStatus = function() 
+    {
+        return { status:2, msg:'Ready' };
+    };
+
+    ext._shutdown = function() 
+    {
+        if (poller) 
+        {
+            clearInterval(poller);
+            poller = null;
+        }
+    };
+    var descriptor = 
+    {
         blocks: [
             // Block type, block name, function name
-            [' ', 'my first block', 'my_first_block'],
+            [' ', '버스도착정보 %s', 'getBusArrivalInfo','720'],
         ]
     };
 
-    // Register the extension
-    ScratchExtensions.register('My first extension', descriptor, ext);
+    ScratchExtensions.register('신도중버스정보', descriptor, ext);
+    updateBusInfo();
+    var poller = setInterval(updateBusInfo, 5000);
+
 })({});
-/*
-(function(ext) {
-    // Cleanup function when the extension is unloaded
-    ext._shutdown = function() {};
-
-    // Status reporting code
-    // Use this to report missing hardware, plugin or unsupported browser
-    ext._getStatus = function() {
-        return {status: 2, msg: 'Ready'};
-    };
-
-              //url: 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&units=imperial',
-    ext.get_temp = function(location, callback) {
-        // Make an AJAX call to the Open Weather Maps API
-        $.ajax({
-              url: 'https://rdhvta8915.execute-api.ap-northeast-2.amazonaws.com/prod',
-              dataType: 'jsonp',
-              success: function( weather_data ) {
-                  // Got the data - parse it and return the temperature
-                  console.log('weather_data',weather_data);
-                  //temperature = weather_data['main']['temp'];
-                  callback(20);
-              }
-        });
-    };
-
-    // Block and block menu descriptions
-    var descriptor = {
-        blocks: [
-            ['R', 'current temperature in city %s', 'get_temp', 'Boston, MA'],
-        ]
-    };
-
-    // Register the extension
-    ScratchExtensions.register('Weather extension', descriptor, ext);
-})({});
-*/
