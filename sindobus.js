@@ -51,8 +51,8 @@
 
         if(busInfo != '')
         {
-            console.log('busInfo2',busInfo.arrmsg2);
-            callback(busInfo);
+            console.log('busInfo1',busInfo.arrmsg1);
+            callback(busInfo.arrmsg1);
         }
         else 
         {
@@ -70,7 +70,7 @@
         if(busInfo != '')
         {
             console.log('busInfo2',busInfo.arrmsg2);
-            callback(busInfo);
+            callback(busInfo.arrmsg1);
         }
         else 
         {
@@ -88,7 +88,7 @@
         if(busInfo != '')
         {
             console.log('busInfo2',busInfo.arrmsg2);
-            callback(busInfo);
+            callback(busInfo.arrmsg1);
         }
         else 
         {
@@ -135,6 +135,6 @@
 
     ScratchExtensions.register('신도중버스정보', descriptor, ext);
     updateBusInfo();
-    var poller = setInterval(updateBusInfo, 20000);
+    var poller = setInterval(updateBusInfo, 40000);
 
 })({});
